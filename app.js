@@ -179,7 +179,7 @@ app.post('/exam3b',
   }
 )
 
-  app.get('/githubInfo/:githubId',
+app.get('/githubInfo/:githubId',
   async (req,res,next) => {
     const id = req.params.githubId;
     const response = await axios.get('https://api.github.com/users/'+id+'/repos')
@@ -189,18 +189,104 @@ app.post('/exam3b',
     //res.json(response.data.slice(100,105));
   })
 
-  app.get('/uploadDB',
+app.get('/uploadDB',
   async (req,res,next) => {
-    //await Course.deleteMany({})
-    for (course of courses){
-      const {coursenum,section,term}=course;
-      await Course.deleteMany({});
-      await Course.insertMany(courses);
-    }
+    await Course.deleteMany({});
+    await Course.insertMany(courses);
     const num = await Course.find({}).count();
     res.send("data uploaded: "+num)
   }
 )
+
+app.get('/bigCourses',
+  async (req,res,next) => {
+    try{
+      const bigCourses =  await Course.find({enrolled:{$gt:150}})
+                          .select("subject coursenum name enrolled term")
+                          .sort({term:1,enrolled:-1})
+                          .limit(3)
+                          //.select("subject coursenum name enrolled term")
+                          //.sort({term:1,enrolled:-1})
+                          //.limit(3)
+                          ;
+      res.json(bigCourses);
+    }catch(e){
+      next(e)
+    }
+  })
+
+
+  app.get('/addCourse/:courseId',
+  isLoggedIn,
+  async (req,res,next) => {
+   try {
+     const schedItem = 
+        new Schedule(
+         {
+           userid:res.locals.user._id,
+           courseId:req.params.courseId}
+         )
+     await schedItem.save();
+     res.redirect('/coursesBySubject')
+   }catch(e) {
+     next(e)
+   }
+  })
+
+app.get('/showSchedule',
+  isLoggedIn,
+  async (req,res,next) => {
+    try{
+      const courses = 
+        await Schedule.find({userId:res.locals.user.id})
+          .populate('courseId')
+      //res.json(courses);
+      res.locals.courses = courses;
+      res.render('showmyschedule')
+    }catch(e){
+      next(e);
+    }
+  })
+
+app.get('/deleteFromSchedule/:itemId',
+  isLoggedIn,
+  async (req,res,next) => {
+    try {
+      const itemId = req.params.itemId;
+      await Schedule.deleteOne({_id:itemId});
+      res.redirect('/showSchedule');
+    } catch(e){
+      next(e);
+    }
+  })
+
+app.get('/coursesBySubject',
+  (req,res,next) =>{
+    res.locals.courses =[]
+    console.log('rendering couresBySubject')
+    res.render('coursesBySubject')
+  })
+
+app.post('/coursesBySubject',
+  async (req,res,next) => {
+    try{
+      const subject = req.body.subject;
+      const term = req.body.term;
+      const data = await Course.find({subject,term,enrolled:{$gt:0}})
+               //.select("subject coursenum name enrolled term")
+               .sort({enrolled:-1});
+      //res.json(data);     
+      const scheduledCourses = 
+         await Schedule.find({userId:res.locals.user.id});
+      res.locals.schedIds = 
+         scheduledCourses.map(x => x.courseId);
+      res.locals.courses = data;
+      res.render('coursesBySubject');  
+    }catch(e){
+      next(e)
+    }
+  })
+
 
 app.get('/meals',
   (req,res,next) => {
@@ -216,6 +302,87 @@ app.post('/meals',
     res.render('showMeals');
   })
 
+app.get('/university',
+  (req,res,next) => {
+    res.render('university');
+  });
+
+app.post('/university',
+  async (req,res,next) => {
+    const country = req.body.country;
+    const response = await axios.get('http://universities.hipolabs.com/search?country=' + country);
+    console.dir(response.data.length);
+    res.locals.lists = response.data;
+    res.render('showUniversity');
+  })
+
+const ToDoItem = require('./models/ToDoItem');
+const Schedule = require('./models/Schedule');
+
+app.get('/todo', (req,res,next) => res.render('todo'))
+  
+app.post('/todo',
+    isLoggedIn,
+    async (req,res,next) => {
+      try {
+        const desc = req.body.desc;
+        const todoObj = {
+          userId:res.locals.user._id,
+          descr:desc,
+          completed:false,
+          createdAt: new Date(),
+        }
+        const todoItem = new ToDoItem(todoObj); // create ORM object for item
+        await todoItem.save();  // stores it in the database
+        res.redirect('/showTodoList');
+  
+  
+      }catch(err){
+        next(err);
+      }
+    }
+  )
+  
+  app.get('/showTodoList',
+          isLoggedIn,
+    async (req,res,next) => {
+     try {
+      const todoitems = await ToDoItem.find({userId:res.locals.user._id});
+  
+      res.locals.todoitems = todoitems
+      res.render('showTodoList')
+      //res.json(todoitems);
+     }catch(e){
+      next(e);
+     }
+    }
+  )
+  
+app.get('/deleteToDoItem/:itemId',
+  isLoggedIn,
+  async (req,res,next) => {
+  try {
+    const itemId = req.params.itemId;
+    await ToDoItem.deleteOne({_id:itemId});
+    res.redirect('/showToDoList');
+  } catch(e){
+    next(e);
+  }
+})
+
+app.get('/toggleToDoItem/:itemId',
+    isLoggedIn,
+    async (req,res,next) => {
+      try {
+        const itemId = req.params.itemId;
+        const item = await ToDoItem.findOne({_id:itemId});
+        item.completed = ! item.completed;
+        await item.save();
+        res.redirect('/showTodoList');
+      } catch(e){
+        next(e);
+      }
+    })
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
