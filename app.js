@@ -15,13 +15,13 @@ const MongoDBStore = require('connect-mongodb-session')(session);
 // *********************************************************** //
 //  Loading JSON datasets
 // *********************************************************** //
-const courses = require('./public/data/courses20-21.json')
+const universities = require('./public/data/world_universities_and_domains.json')
 
 // *********************************************************** //
 //  Loading models
 // *********************************************************** //
 
-const Course = require('./models/Course')
+const University = require('./models/University')
 
 // *********************************************************** //
 //  Connecting to the database
@@ -100,7 +100,7 @@ app.get('/simpleform',
     res.render('simpleform')
   })
 
-  app.post("/simpleform", 
+app.post("/simpleform", 
   isLoggedIn,
  (req, res, next) => {
   // res.json(req.body);
@@ -134,13 +134,13 @@ const family=[
     {name:'Lisa',age:22,},
     ];
 
-  app.get('/showFamily',
+app.get('/showFamily',
     (req,res,next) => {
       res.locals.family = family;
       res.render('showFamily');
     })
 
-    app.get('/apidemo/:email',
+app.get('/apidemo/:email',
     async (req,res,next) => {
       const email = req.params.email;
       const response = await axios.get('https://www.cs.brandeis.edu/~tim/cs103aSpr22/courses20-21.json')
@@ -191,9 +191,9 @@ app.get('/githubInfo/:githubId',
 
 app.get('/uploadDB',
   async (req,res,next) => {
-    await Course.deleteMany({});
-    await Course.insertMany(courses);
-    const num = await Course.find({}).count();
+    await University.deleteMany({});
+    await University.insertMany(university);
+    const num = await University.find({}).count();
     res.send("data uploaded: "+num)
   }
 )
@@ -216,7 +216,7 @@ app.get('/bigCourses',
   })
 
 
-  app.get('/addCourse/:courseId',
+app.get('/addUniversity/:name',
   isLoggedIn,
   async (req,res,next) => {
    try {
@@ -224,10 +224,10 @@ app.get('/bigCourses',
         new Schedule(
          {
            userid:res.locals.user._id,
-           courseId:req.params.courseId}
+           universityName:req.params.universityName}
          )
      await schedItem.save();
-     res.redirect('/coursesBySubject')
+     res.redirect('/universityByCountry')
    }catch(e) {
      next(e)
    }
@@ -237,51 +237,49 @@ app.get('/showSchedule',
   isLoggedIn,
   async (req,res,next) => {
     try{
-      const courses = 
+      const universities = 
         await Schedule.find({userId:res.locals.user.id})
-          .populate('courseId')
+          .populate('universityName')
       //res.json(courses);
-      res.locals.courses = courses;
+      res.locals.universities = universities;
       res.render('showmyschedule')
     }catch(e){
       next(e);
     }
   })
 
-app.get('/deleteFromSchedule/:itemId',
-  isLoggedIn,
-  async (req,res,next) => {
-    try {
-      const itemId = req.params.itemId;
-      await Schedule.deleteOne({_id:itemId});
-      res.redirect('/showSchedule');
-    } catch(e){
-      next(e);
-    }
-  })
+// app.get('/deleteFromSchedule/:itemId',
+//   isLoggedIn,
+//   async (req,res,next) => {
+//     try {
+//       const itemId = req.params.itemId;
+//       await Schedule.deleteOne({_id:itemId});
+//       res.redirect('/showSchedule');
+//     } catch(e){
+//       next(e);
+//     }
+//   })
 
-app.get('/coursesBySubject',
+app.get('/universityByCountry',
   (req,res,next) =>{
-    res.locals.courses =[]
-    console.log('rendering couresBySubject')
-    res.render('coursesBySubject')
+    res.locals.universities =[]
+    console.log('rendering universityByCountry')
+    res.render('universityByCountry')
   })
 
-app.post('/coursesBySubject',
+app.post('/universityByCountry',
   async (req,res,next) => {
     try{
-      const subject = req.body.subject;
-      const term = req.body.term;
-      const data = await Course.find({subject,term,enrolled:{$gt:0}})
-               //.select("subject coursenum name enrolled term")
-               .sort({enrolled:-1});
+      const country = req.body.country;
+      const data = await University.find({country});
+      //.select("subject coursenum name enrolled term")
       //res.json(data);     
-      const scheduledCourses = 
+      const selectedUniversity = 
          await Schedule.find({userId:res.locals.user.id});
-      res.locals.schedIds = 
-         scheduledCourses.map(x => x.courseId);
-      res.locals.courses = data;
-      res.render('coursesBySubject');  
+      res.locals.selectNames = 
+         selectedUniversity.map(x => x.universityName);
+      res.locals.universities = data;
+      res.render('universityByCountry');  
     }catch(e){
       next(e)
     }

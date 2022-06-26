@@ -1,0 +1,24 @@
+<h1> University By Country </h1>
+<form method="post" action="/universityByCountry">
+    Please enter a Country: <input type="text" name="Country">
+    <br>
+    <input type="submit">
+</form>
+
+<% if (universities.length==0) { %>
+No universities to display
+<% } else {%>
+
+    <h1>Universities</h1>
+    <% for (university of universities) {%>
+    <hr>
+    <%= university.name %>
+    <% if(selectNames.includes(university.name)){%>
+        selected
+    <% } else {%>
+    <a href="/addUniversity/<%= university.name%>">add to list</a>
+    <% }}} %>
+
+<pre>
+    <%= JSON.stringify(universities,null,5) %>
+</pre>

@@ -1,9 +1,6 @@
 <ol>
-    <% for(course of courses) {%>
-        <li><%= course.courseId?.subject %>
-            <%= course.courseId?.coursenum %>
-            <%= course.courseId?.name %>
-            <a href="/deleteFromSchedule/<%= course.id%>">delete</a>
+    <% for(university of universities) {%>
+        <li><%= university.universityName?.name %>
         </li>
     <% } %>
 </ol>
