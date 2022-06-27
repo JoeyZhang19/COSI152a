@@ -29,7 +29,7 @@ const University = require('./models/University')
 
 const mongoose = require( 'mongoose' );
 //const mongodb_URI = 'mongodb://localhost:27017/cs103a_todo'
-const mongodb_URI = 'mongodb+srv://cs_sj:BrandeisSpr22@cluster0.kgugl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority'
+const mongodb_URI = 'mongodb+srv://cs_sj:BrandeisSpr22@cluster0.kgugl.mongodb.net/JoeyZhang?retryWrites=true&w=majority'
 
 mongoose.connect( mongodb_URI, { useNewUrlParser: true, useUnifiedTopology: true } );
 // fix deprecation warnings
@@ -192,7 +192,7 @@ app.get('/githubInfo/:githubId',
 app.get('/uploadDB',
   async (req,res,next) => {
     await University.deleteMany({});
-    await University.insertMany(university);
+    await University.insertMany(universities);
     const num = await University.find({}).count();
     res.send("data uploaded: "+num)
   }
@@ -271,13 +271,16 @@ app.post('/universityByCountry',
   async (req,res,next) => {
     try{
       const country = req.body.country;
-      const data = await University.find({country});
+      console.log(country);
+      const data = await University.find({country:req.body.country});
+      console.log("hello world");
       //.select("subject coursenum name enrolled term")
       //res.json(data);     
       const selectedUniversity = 
-         await Schedule.find({userId:res.locals.user.id});
-      res.locals.selectNames = 
-         selectedUniversity.map(x => x.universityName);
+          await Schedule.find({userId:res.locals.user.id});
+      console.log(selectedUniversity);
+      // res.locals.selectNames = 
+      //    data.map(x => x.universityName);
       res.locals.universities = data;
       res.render('universityByCountry');  
     }catch(e){
