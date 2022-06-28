@@ -93,105 +93,9 @@ app.use(auth)
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
-
-app.get('/simpleform',
-  isLoggedIn,
-  (req,res,next) => {
-    res.render('simpleform')
-  })
-
-app.post("/simpleform", 
-  isLoggedIn,
- (req, res, next) => {
-  // res.json(req.body);
-  const { username, age, height } = req.body;
-    res.locals.username = username;
-    res.locals.age = age;
-    res.locals.ageInDays = age*365;
-    res.locals.heightCM = height*2.54
-    res.locals.version='1.1.0';
-    res.render('simpleformresult');
-  })
-
 app.get('/developer',
   (req,res,next) =>{
     res.render('developer');
-  })
-
-app.get('/bmi',
-  (req,res,next) =>{
-    res.render('bmi');
-  })
-
-app.post('/bmi',
-  (req,res,next) => {
-    const{height,weight} = req.body;
-    res.locals.height = height;
-    res.locals.weight = weight;
-    res.locals.bmi = weight/(height*height)*703;
-    res.locals.version='1.1.1';
-    res.render('bmiresult');
-  })
-
-const family=[
-    {name:'Bob',age:13,},
-    {name:'Tom',age:20,},
-    {name:'Lisa',age:22,},
-    ];
-
-app.get('/showFamily',
-    (req,res,next) => {
-      res.locals.family = family;
-      res.render('showFamily');
-    })
-
-app.get('/apidemo/:email',
-    async (req,res,next) => {
-      const email = req.params.email;
-      const response = await axios.get('https://www.cs.brandeis.edu/~tim/cs103aSpr22/courses20-21.json')
-      console.dir(response.data.length)
-      res.locals.courses = response.data.filter((c) => c.instructor[2]==email+"@brandeis.edu")
-      res.render('showCourses')
-      //res.json(response.data.slice(100,105));
-    })
-
-app.get('/dist',
-  (req,res,next) =>{
-    res.render('3Ddist');
-  })
-  
-app.post('/dist',
-  (req,res,next) => {
-    const{x,y,z} = req.body;
-    res.locals.x = x;
-    res.locals.y = y;
-    res.locals.z = z;
-    res.locals.d = Math.sqrt(x*x+y*y+z*z);
-    res.render('3Ddistresult');
-  })
-
-app.get('/exam3b',
-  (req, res, next) => {
-    res.render('exam3b')
-  }
-)
-
-app.post('/exam3b',
-  (req,res,next) => {
-    const {url} = req.body;
-    res.locals.url = url
-    res.render('exam3bShowImage');
-  }
-)
-
-app.get('/githubInfo/:githubId',
-  async (req,res,next) => {
-    const id = req.params.githubId;
-    const response = await axios.get('https://api.github.com/users/'+id+'/repos')
-    console.dir(response.data.length)
-    res.locals.repos = response.data
-    res.render('showRepos')
-    //res.json(response.data.slice(100,105));
   })
 
 app.get('/uploadDB',
@@ -291,21 +195,6 @@ app.post('/universityByCountry',
     }catch(e){
       next(e)
     }
-  })
-
-
-app.get('/meals',
-  (req,res,next) => {
-    res.render('meals');
-  });
-
-app.post('/meals',
-  async (req,res,next) => {
-    const ingredient = req.body.ingredient;
-    const response = await axios.get('https://www.themealdb.com/api/json/v1/1/filter.php?i=' + ingredient);
-    console.dir(response.data.length);
-    res.locals.meals = response.data.meals;
-    res.render('showMeals');
   })
 
 app.get('/university',
