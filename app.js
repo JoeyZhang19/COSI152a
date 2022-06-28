@@ -113,6 +113,11 @@ app.post("/simpleform",
     res.render('simpleformresult');
   })
 
+app.get('/developer',
+  (req,res,next) =>{
+    res.render('developer');
+  })
+
 app.get('/bmi',
   (req,res,next) =>{
     res.render('bmi');
