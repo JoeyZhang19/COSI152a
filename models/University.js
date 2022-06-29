@@ -5,6 +5,7 @@ const UniversityId = Schema.Types.UniversityId;
 const Mixed = Schema.Types.Mixed;
 
 var universitySchema = Schema( {
+    userId: {type:Schema.Types.ObjectId, ref:'User'},
     web_pages: Mixed,
     name: String,
     alpha_two_code: String,

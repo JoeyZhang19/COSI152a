@@ -1,10 +1,9 @@
+<h1>University List</h1>
+
 <ol>
     <% for(university of universities) {%>
-        <li><%= university.universityName?.name %>
+        <li><%= university.universityId.name %>
+            <a href="/deleteFromSchedule/<%= university.id %>"> delete </a>
         </li>
     <% } %>
 </ol>
-<!--
-<pre>
-    <%= JSON.stringify(courses,null,5) %>
-</pre>-->

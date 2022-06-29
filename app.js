@@ -125,7 +125,7 @@ app.get('/bigCourses',
   })
 
 
-app.get('/addUniversity/:name',
+app.get('/addUniversity/:id',
   isLoggedIn,
   async (req,res,next) => {
    try {
@@ -133,7 +133,7 @@ app.get('/addUniversity/:name',
         new Schedule(
          {
            userid:res.locals.user._id,
-           universityName:req.params.universityName}
+           universityId:req.params.id}
          )
      await schedItem.save();
      res.redirect('/universityByCountry')
@@ -148,7 +148,7 @@ app.get('/showSchedule',
     try{
       const universities = 
         await Schedule.find({userId:res.locals.user.id})
-          .populate('universityName')
+          .populate('universityId')
       //res.json(courses);
       res.locals.universities = universities;
       res.render('showmyschedule')
@@ -157,22 +157,23 @@ app.get('/showSchedule',
     }
   })
 
-// app.get('/deleteFromSchedule/:itemId',
-//   isLoggedIn,
-//   async (req,res,next) => {
-//     try {
-//       const itemId = req.params.itemId;
-//       await Schedule.deleteOne({_id:itemId});
-//       res.redirect('/showSchedule');
-//     } catch(e){
-//       next(e);
-//     }
-//   })
+
+app.get('/deleteFromSchedule/:itemId',
+  isLoggedIn,
+  async (req,res,next) => {
+    try {
+      const itemId = req.params.itemId;
+      await Schedule.deleteOne({_id:itemId});
+      res.redirect('/showSchedule');
+    } catch(e){
+      next(e);
+    }
+  })
 
 app.get('/universityByCountry',
   (req,res,next) =>{
     res.locals.universities =[]
-    console.log('rendering universityByCountry')
+    //console.log('rendering universityByCountry')
     res.render('universityByCountry')
   })
 
@@ -180,16 +181,11 @@ app.post('/universityByCountry',
   async (req,res,next) => {
     try{
       const country = req.body.country;
-      console.log(country);
-      const data = await University.find({country:req.body.country});
-      console.log("hello world");
-      //.select("subject coursenum name enrolled term")
-      //res.json(data);     
+      const data = await University.find({country:req.body.country});   
       const selectedUniversity = 
           await Schedule.find({userId:res.locals.user.id});
-      console.log(selectedUniversity);
-      // res.locals.selectNames = 
-      //    data.map(x => x.universityName);
+      res.locals.selectNames = 
+          data.map(x => x.universityName);
       res.locals.universities = data;
       res.render('universityByCountry');  
     }catch(e){
