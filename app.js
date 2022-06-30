@@ -28,8 +28,12 @@ const University = require('./models/University')
 // *********************************************************** //
 
 const mongoose = require( 'mongoose' );
+const mongodb_URI = process.env.mongodb_URI;
 //const mongodb_URI = 'mongodb://localhost:27017/cs103a_todo'
-const mongodb_URI = 'mongodb+srv://cs_sj:BrandeisSpr22@cluster0.kgugl.mongodb.net/JoeyZhang?retryWrites=true&w=majority'
+//const mongodb_URI = 'mongodb+srv://cs_sj:BrandeisSpr22@cluster0.kgugl.mongodb.net/JoeyZhang?retryWrites=true&w=majority'
+//cs152a:yHjjmOXVb9zS1Nn6
+//const mongodb_URI='mongodb+srv://cs152a:yHjjmOXVb9zS1Nn6@cluster0.bojm1.mongodb.net/?retryWrites=true&w=majority'
+
 
 mongoose.connect( mongodb_URI, { useNewUrlParser: true, useUnifiedTopology: true } );
 // fix deprecation warnings
