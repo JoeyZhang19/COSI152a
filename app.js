@@ -28,11 +28,11 @@ const University = require('./models/University')
 // *********************************************************** //
 
 const mongoose = require( 'mongoose' );
-const mongodb_URI = process.env.mongodb_URI;
+//const mongodb_URI = process.env.mongodb_URI;
 //const mongodb_URI = 'mongodb://localhost:27017/cs103a_todo'
 //const mongodb_URI = 'mongodb+srv://cs_sj:BrandeisSpr22@cluster0.kgugl.mongodb.net/JoeyZhang?retryWrites=true&w=majority'
 //cs152a:yHjjmOXVb9zS1Nn6
-//const mongodb_URI='mongodb+srv://cs152a:yHjjmOXVb9zS1Nn6@cluster0.bojm1.mongodb.net/?retryWrites=true&w=majority'
+const mongodb_URI='mongodb+srv://cs152a:yHjjmOXVb9zS1Nn6@cluster0.bojm1.mongodb.net/?retryWrites=true&w=majority'
 
 
 mongoose.connect( mongodb_URI, { useNewUrlParser: true, useUnifiedTopology: true } );
@@ -225,13 +225,12 @@ app.post('/todo',
           userId:res.locals.user._id,
           descr:desc,
           completed:false,
+          duedate: req.body.duedate,
           createdAt: new Date(),
         }
         const todoItem = new ToDoItem(todoObj); // create ORM object for item
         await todoItem.save();  // stores it in the database
         res.redirect('/showTodoList');
-  
-  
       }catch(err){
         next(err);
       }
@@ -243,7 +242,6 @@ app.post('/todo',
     async (req,res,next) => {
      try {
       const todoitems = await ToDoItem.find({userId:res.locals.user._id});
-  
       res.locals.todoitems = todoitems
       res.render('showTodoList')
       //res.json(todoitems);

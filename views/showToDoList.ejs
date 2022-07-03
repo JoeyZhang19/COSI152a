@@ -1,20 +1,28 @@
 <h1>Todo items</h1>
 <ul>
     <% for (item of todoitems){%>
-        <li><%= item.descr %>  
+        <li><p class="text-capitalize fw-bolder fs-5"><%= item.descr %>  </p>
+            <br> 
+            <p class="fs-6">Due at: <%= item.duedate %> </p>
+            <br>
+            <p class="fs-6">Created at: <%= item.createdAt %></p>
             <a href="/toggleToDoItem/<%= item.id %>">
+                <button type="button" class="btn btn-outline-success">
                 <%= item.completed %>
-            </a><br> 
-            <%= item.createdAt %>
-            <a href="/deleteToDoItem/<%= item.id %>"> delete </a>
+                </button>
+            </a>
+            <a  href="/deleteToDoItem/<%= item.id %>"> 
+                <button type="button" class="btn btn-outline-danger">Delete</button> 
+            </a>
         </li>
     <% } %>
 </ul>
 
 <h1>Add a todo</h1>
 <form method="post" action="/todo">
-    description:<input type="text" name="desc"><br>
-    <input type="submit">
+    Description:<input type="text" name="desc"><br>
+    Due Date:<input type="text" name="duedate"><br>
+    <input class="btn btn-primary" type="submit">
 </form>
 <hr> 
-<pre><%= JSON.stringify(todoitems,null,5) %></pre>
+<!-- <pre><%= JSON.stringify(todoitems,null,5) %></pre> -->

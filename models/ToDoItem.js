@@ -6,6 +6,7 @@ var todoSchema = Schema( {
   userId: {type:Schema.Types.ObjectId, ref:'User'},
   descr: String,
   completed: Boolean,
+  duedate: String,
   createdAt: Date,
 } );
 
