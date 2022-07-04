@@ -1,17 +1,15 @@
-
-
     <div class="row">
       
         <div class="col-sm-5">
             <h2>Login</h2>
             <form method="post" action="/login">
-                username: <input type="text"
-                                 autocomplete="username"
-                                 name="username"><br>
-                passphrase: <input  type="password"
-                                    autocomplete="passphrase"
-                                    name="passphrase"><br>
-                <input type="submit">
+                <!-- username:  -->
+                <label for="username" class="col-form-label">User Name</label>
+                <input type="text" class="form-control" autocomplete="username" name="username"><br>
+                <!-- passphrase:  -->
+                <label for="passphrase" class="form-label">Passphrase</label>
+                <input  type="password" class="form-control" autocomplete="passphrase" name="passphrase"><br>
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
       
@@ -22,16 +20,20 @@
         <div class="col-sm-5">
             <h2>Signup</h2>
             <form method="post" action="/signup">
-                username: <input type="text" autocomplete="username" name="username"><br>
-                password
-                   <input type="password" autocomplete="passphrase" name="passphrase"><br>
-                confirm password:
-                    <input type="password" name="passphrase2"><br>
+                <label for="username" class="col-form-label">User Name</label>
+                <input type="text" class="form-control" autocomplete="username" name="username"><br>
+                <label for="passphrase" class="form-label">Password</label>
+                <input  type="password" class="form-control" autocomplete="passphrase" name="passphrase"><br>
+                <label for="passphrase2" class="form-label">Confirm Password</label>
+                <input  type="password" class="form-control" name="passphrase2"><br>
+                <label for="email" class="form-label">Email</label>
+                <input  type="text" class="form-control" name="email" aria-describedby="emailHelp">
+                <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div><br>
+                <label for="number" class="form-label">Age</label>
+                <input  type="age" class="form-control" name="age"><br>
               
-                age: <input type="number" name="age"><br>
               
-              
-                <input type="submit">
+                <button type="submit" class="btn btn-primary">Submit</button>
             </form>
         </div>
     </div>
