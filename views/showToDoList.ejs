@@ -20,9 +20,15 @@
 
 <h1>Add a todo</h1>
 <form method="post" action="/todo">
-    Description:<input type="text" name="desc"><br>
-    Due Date:<input type="text" name="duedate"><br>
-    <input class="btn btn-primary" type="submit">
-</form>
+    <div class="mb-3">
+      <label for="desc" class="form-label">Description</label>
+      <input type="text" class="form-control" name="desc"><br>
+    </div>
+    <div class="mb-3">
+      <label for="duedate" class="form-label">Due Date</label>
+      <input type="text" class="form-control" name="duedate"><br>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
 <hr> 
 <!-- <pre><%= JSON.stringify(todoitems,null,5) %></pre> -->
