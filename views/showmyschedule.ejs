@@ -3,7 +3,8 @@
 <ol>
     <% for(university of universities) {%>
         <li><%= university.universityId.name %>
-            <a href="/deleteFromSchedule/<%= university.id %>"> delete </a>
+            <a href="/deleteFromSchedule/<%= university.id %>">
+                <button type="button btn-outline-danger"> Delete </button></a>
         </li>
     <% } %>
 </ol>

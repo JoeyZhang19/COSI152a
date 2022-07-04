@@ -2,11 +2,11 @@
 <form method="post" action="/universityByCountry">
     Please enter a Country: <input type="text" name="country">
     <br>
-    <input type="submit">
+    <input class="btn btn-primary" type="submit">
 </form>
 
 <% if (universities.length==0) { %>
-No universities to display
+<p class="fs-6">No universities to display</p>
 <% } else {%>
 
     <h1>Universities</h1>
@@ -16,9 +16,10 @@ No universities to display
     <% if(selectNames.includes(university.name)){%>
         selected
     <% } else {%>
-    <a href="/addUniversity/<%= university.id %>">add to list</a>
+    <a href="/addUniversity/<%= university.id %>">
+        <button type="button btn-info">Add to list </button></a>
     <% }}} %>
 
-<pre>
+<!-- <pre>
     <%= JSON.stringify(universities,null,5) %>
-</pre>
+</pre> -->
