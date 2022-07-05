@@ -111,24 +111,6 @@ app.get('/uploadDB',
   }
 )
 
-app.get('/bigCourses',
-  async (req,res,next) => {
-    try{
-      const bigCourses =  await Course.find({enrolled:{$gt:150}})
-                          .select("subject coursenum name enrolled term")
-                          .sort({term:1,enrolled:-1})
-                          .limit(3)
-                          //.select("subject coursenum name enrolled term")
-                          //.sort({term:1,enrolled:-1})
-                          //.limit(3)
-                          ;
-      res.json(bigCourses);
-    }catch(e){
-      next(e)
-    }
-  })
-
-
 app.get('/addUniversity/:id',
   isLoggedIn,
   async (req,res,next) => {
