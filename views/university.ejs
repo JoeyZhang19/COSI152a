@@ -1,6 +1,12 @@
 <h1>University Finder</h1>
 <form method = "post" action="/university">
-    Enter the country you want to find universities in (use + instead of space between letters): <input type = "text" name = "country">
+    
+    <label for="country" class="form-label">
+        <p class="fs-6">
+        Enter the country you want to find universities in (use + instead of space between letters): 
+        </p>
+    </label>
+    <input  type="text" class="form-control" name="country">
     <br>
-    <input type = "submit">
+    <button type="submit" class="btn btn-primary">Submit</button>
 </form>

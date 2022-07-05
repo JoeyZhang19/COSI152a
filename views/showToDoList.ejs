@@ -1,34 +1,42 @@
-<h1>Todo items</h1>
-<ul>
-    <% for (item of todoitems){%>
-        <li><p class="text-capitalize fw-bolder fs-5"><%= item.descr %>  </p>
-            <br> 
-            <p class="fs-6">Due at: <%= item.duedate %> </p>
-            <br>
-            <p class="fs-6">Created at: <%= item.createdAt %></p>
-            <a href="/toggleToDoItem/<%= item.id %>">
-                <button type="button" class="btn btn-outline-success">
-                <%= item.completed %>
-                </button>
-            </a>
-            <a  href="/deleteToDoItem/<%= item.id %>"> 
-                <button type="button" class="btn btn-outline-danger">Delete</button> 
-            </a>
-        </li>
-    <% } %>
-</ul>
+<div class="bg-warning p-2 text-dart bg-opacity-25">
+    <h1>Todo items</h1>
+</div>
+<div class="bg-warning p-2 text-dart bg-opacity-10">
+    <ul>
+        <% for (item of todoitems){%>
+            <li><p class="text-capitalize fw-bolder fs-5"><%= item.descr %>  </p>
+                <br> 
+                <p class="fs-6">Due at: <%= item.duedate %> </p>
+                <br>
+                <p class="fs-6">Created at: <%= item.createdAt %></p>
+                <a href="/toggleToDoItem/<%= item.id %>">
+                    <button type="button" class="btn btn-outline-success">
+                    <%= item.completed %>
+                    </button>
+                </a>
+                <a  href="/deleteToDoItem/<%= item.id %>"> 
+                    <button type="button" class="btn btn-outline-danger">Delete</button> 
+                </a>
+            </li>
+        <% } %>
+    </ul>
+</div>
 
-<h1>Add a todo</h1>
-<form method="post" action="/todo">
-    <div class="mb-3">
-      <label for="desc" class="form-label">Description</label>
-      <input type="text" class="form-control" name="desc"><br>
-    </div>
-    <div class="mb-3">
-      <label for="duedate" class="form-label">Due Date</label>
-      <input type="text" class="form-control" name="duedate"><br>
-    </div>
-    <button type="submit" class="btn btn-primary">Submit</button>
-  </form>
+<div class="bg-warning p-2 text-dart bg-opacity-25">
+    <h1>Add a todo</h1>
+</div>
+<div class="bg-warning p-2 text-dart bg-opacity-10">
+    <form method="post" action="/todo">
+        <div class="mb-3">
+        <label for="desc" class="form-label">Description</label>
+        <input type="text" class="form-control" name="desc"><br>
+        </div>
+        <div class="mb-3">
+        <label for="duedate" class="form-label">Due Date</label>
+        <input type="text" class="form-control" name="duedate"><br>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>
 <hr> 
 <!-- <pre><%= JSON.stringify(todoitems,null,5) %></pre> -->

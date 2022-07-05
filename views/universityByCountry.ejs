@@ -1,24 +1,29 @@
-<h1> University By Country </h1>
-<form method="post" action="/universityByCountry">
-    Please enter a Country: <input type="text" name="country">
-    <br>
-    <input class="btn btn-primary" type="submit">
-</form>
+<div class="bg-secondary p-2 text-dart bg-opacity-25">
+    <h1> University By Country </h1>
+    <form method="post" action="/universityByCountry">
+        Please enter a Country: <input type="text" name="country">
+       <br>
+       <input class="btn btn-primary" type="submit">
+    </form>
+</div>
 
-<% if (universities.length==0) { %>
-<p class="fs-6">No universities to display</p>
-<% } else {%>
-
-    <h1>Universities</h1>
-    <% for (university of universities) {%>
-    <hr>
-    <%= university.name %>
-    <% if(selectNames.includes(university.name)){%>
-        selected
+<div class="bg-secondary p-2 text-dart bg-opacity-10">
+    <% if (universities.length==0) { %>
+    <p class="fs-6">No universities to display</p>
     <% } else {%>
-    <a href="/addUniversity/<%= university.id %>">
-        <button class="btn btn-outline-info">Add to list </button></a>
-    <% }}} %>
+
+      <h1>Universities</h1>
+      <% for (university of universities) {%>
+      <hr>
+      <%= university.name %>
+      <% if(selectNames.includes(university.name)){%>
+           selected
+       <% } else {%>
+       <a href="/addUniversity/<%= university.id %>">
+           <button class="btn btn-outline-info">Add to list </button></a>
+       <% }}} %>
+
+</div>
 
 <!-- <pre>
     <%= JSON.stringify(universities,null,5) %>

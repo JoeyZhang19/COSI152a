@@ -1,13 +1,16 @@
-<h1>University List</h1>
-
-<% if (universities.length==0) { %>
-    <p class="fs-6">There is nothing in your list. Go to add a university!!</p>
-    <% } else {%>
-<ol>
-    <% for(university of universities) {%>
-        <li><%= university.universityId.name %>
-            <a href="/deleteFromSchedule/<%= university.id %>">
-                <button class="btn btn-outline-danger"> Delete </button></a>
-        </li>
-    <% }} %>
-</ol>
+<div class="bg-danger p-2 text-dart bg-opacity-25">
+    <h1>University List</h1>
+</div>
+<div class="bg-danger p-2 text-dart bg-opacity-10">
+    <% if (universities.length==0) { %>
+        <p class="fs-6">There is nothing in your list. Go to add a university!!</p>
+        <% } else {%>
+    <ol>
+        <% for(university of universities) {%>
+            <li><%= university.universityId.name %>
+                <a href="/deleteFromSchedule/<%= university.id %>">
+                    <button class="btn btn-outline-danger"> Delete </button></a>
+            </li>
+        <% }} %>
+    </ol>
+</div>
