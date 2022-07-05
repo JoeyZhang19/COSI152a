@@ -90,7 +90,9 @@ router.post('/signup',
             {username:username,
              passphrase:encrypted,
              email:email,
-             age:age
+             age:age,
+             sat:sat,
+             dreamschool:dreamschool
             })
           
           await user.save()
