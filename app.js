@@ -161,6 +161,16 @@ app.get('/showSchedule',
     }
   })
 
+app.get('/profile',
+  isLoggedIn,
+  async (req,res,next) => {
+    try{
+      const user = await User.find({username:res.locals.user.id});
+      res.render('profile');
+    } catch(e){
+      next(e);
+    }
+  })
 
 app.get('/deleteFromSchedule/:itemId',
   isLoggedIn,
@@ -214,6 +224,7 @@ app.post('/university',
 
 const ToDoItem = require('./models/ToDoItem');
 const Schedule = require('./models/Schedule');
+const User = require('./models/User');
 
 app.get('/todo', (req,res,next) => res.render('todo'))
   
