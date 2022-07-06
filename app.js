@@ -97,11 +97,13 @@ app.use(auth)
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+//developer introduction page
 app.get('/developer',
   (req,res,next) =>{
     res.render('developer');
   })
 
+//upload the data to the server
 app.get('/uploadDB',
   async (req,res,next) => {
     await University.deleteMany({});
@@ -111,6 +113,7 @@ app.get('/uploadDB',
   }
 )
 
+//add a university to the user's list
 app.get('/addUniversity/:id',
   isLoggedIn,
   async (req,res,next) => {
@@ -128,6 +131,7 @@ app.get('/addUniversity/:id',
    }
   })
 
+//show the user's schedule
 app.get('/showSchedule',
   isLoggedIn,
   async (req,res,next) => {
@@ -143,6 +147,7 @@ app.get('/showSchedule',
     }
   })
 
+//show the user's basic information
 app.get('/profile',
   isLoggedIn,
   async (req,res,next) => {
@@ -154,6 +159,7 @@ app.get('/profile',
     }
   })
 
+//delete a university from the user's schedule
 app.get('/deleteFromSchedule/:itemId',
   isLoggedIn,
   async (req,res,next) => {
@@ -166,6 +172,7 @@ app.get('/deleteFromSchedule/:itemId',
     }
   })
 
+//search the university by country
 app.get('/universityByCountry',
   (req,res,next) =>{
     res.locals.universities =[]
@@ -189,6 +196,7 @@ app.post('/universityByCountry',
     }
   })
 
+//find the universities and return the universities in a table
 app.get('/university',
   (req,res,next) => {
     res.render('university');
@@ -208,8 +216,10 @@ const ToDoItem = require('./models/ToDoItem');
 const Schedule = require('./models/Schedule');
 const User = require('./models/User');
 
+//todo list function
 app.get('/todo', (req,res,next) => res.render('todo'))
   
+//show the user's todo list after the user add a todo item
 app.post('/todo',
     isLoggedIn,
     async (req,res,next) => {
@@ -231,6 +241,7 @@ app.post('/todo',
     }
   )
   
+//show the user's todo list
   app.get('/showTodoList',
           isLoggedIn,
     async (req,res,next) => {
@@ -244,7 +255,8 @@ app.post('/todo',
      }
     }
   )
-  
+
+//delete a todo item from the user's todo list
 app.get('/deleteToDoItem/:itemId',
   isLoggedIn,
   async (req,res,next) => {
@@ -257,6 +269,7 @@ app.get('/deleteToDoItem/:itemId',
   }
 })
 
+//mark if the todo item is completed
 app.get('/toggleToDoItem/:itemId',
     isLoggedIn,
     async (req,res,next) => {
