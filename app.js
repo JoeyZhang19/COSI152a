@@ -175,7 +175,8 @@ app.get('/deleteFromSchedule/:itemId',
 //search the university by country
 app.get('/universityByCountry',
   (req,res,next) =>{
-    res.locals.universities =[]
+    res.locals.universities =[];
+    res.locals.selectNames =[];
     //console.log('rendering universityByCountry')
     res.render('universityByCountry')
   })
@@ -186,10 +187,12 @@ app.post('/universityByCountry',
       const country = req.body.country;
       const data = await University.find({country:req.body.country});   
       const selectedUniversity = 
-          await Schedule.find({userId:res.locals.user.id});
+          await Schedule.find({userId:res.locals.user.id})
+          .populate('universityId');
       res.locals.selectNames = 
-          data.map(x => x.universityName);
+          selectedUniversity.map(x => x.universityId.name);
       res.locals.universities = data;
+      //res.json(res.locals.selectNames);
       res.render('universityByCountry');  
     }catch(e){
       next(e)
